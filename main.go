@@ -14,6 +14,10 @@ func main() {
 		w.Write([]byte("Hello, World!"))
 	})
 
+	http.HandleFunc("/cats", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Tener un gato es un masaje al corazon"))
+	})
+
 	s := http.Server{
 		Addr:         ":8080",
 		Handler:      nil,
