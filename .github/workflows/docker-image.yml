@@ -42,11 +42,20 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "NEW SEMANTIC VERSION: $NEW_VERSION"
 
+      - name: Install Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+
       - name: Build image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/hello-world-go:${{ env.NEW_VERSION }} --platform=linux/arm64,linux/amd64 .
+          docker buildx build \
+             --file Dockerfile \
+             -t ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }} \
+             --platform=linux/arm64,linux/amd64 .
 
       - name: Push the Docker Image
         env:
