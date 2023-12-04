@@ -3,7 +3,7 @@ run-name: Docker build Image - Go
 on:
   workflow_dispatch:
 jobs:
-  build:
+  build-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           docker buildx build \
-             --file Dockerfile \
+             -file ./Dockerfile \
              -t ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }} \
              --platform=linux/arm64,linux/amd64 .
 
