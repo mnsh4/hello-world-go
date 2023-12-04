@@ -40,4 +40,16 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          echo "NEW SEMANTIC VERSION: $NEW_VERSION!!"
+          echo "NEW SEMANTIC VERSION: $NEW_VERSION"
+
+      - name: Build image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build . --file Dockerfile --tag r6257o9/hello-world-go:${{ env.NEW_VERSION }}
+
+      - name: Push the Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker push r6257o9/hello-world-go:${{ env.NEW_VERSION }}
