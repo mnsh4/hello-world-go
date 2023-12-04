@@ -46,10 +46,10 @@ jobs:
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker build . --file Dockerfile --tag r6257o9/hello-world-go:${{ env.NEW_VERSION }}
+          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/hello-world-go:${{ env.NEW_VERSION }} --platform=linux/arm64,linux/amd64 .
 
       - name: Push the Docker Image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker push r6257o9/hello-world-go:${{ env.NEW_VERSION }}
+          docker push ${{ secrets.DOCKER_USER }}/hello-world-go:${{ env.NEW_VERSION }}
