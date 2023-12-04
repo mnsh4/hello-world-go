@@ -1,23 +1,9 @@
 name: Docker Image CI
 run-name: Docker build Image - Go
 on:
-  push:
-    branches: main
-
   workflow_dispatch:
 jobs:
-  image:
-    if: ${{ github.event_name != 'workflow_dispatch'}}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Docker build image
-        run: echo "Docker build image"
-
   build:
-    if: ${{ github.event_name != 'push'}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,6 +19,12 @@ jobs:
           format: "${minor}.${major}.${patch}-${increment}"
         id: version
 
+      - name: Install Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+
       - name: Docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -41,12 +33,6 @@ jobs:
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "NEW SEMANTIC VERSION: $NEW_VERSION"
-
-      - name: Install Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          buildx-version: latest
 
       - name: Build image
         env:
