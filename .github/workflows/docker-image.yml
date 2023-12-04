@@ -1,5 +1,5 @@
 name: Docker Image CI
-runs-name: Docker build Image - Go
+run-name: Docker build Image - Go
 on:
   push:
     branches: main
