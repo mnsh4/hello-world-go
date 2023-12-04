@@ -40,8 +40,10 @@ jobs:
             -t ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }} \
             --platform=linux/arm64,linux/amd64 .
 
-      - name: Push the Docker Image
+      - name: Build and push
+        uses: docker/build-push-action@v5
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          docker push ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }}
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }}
