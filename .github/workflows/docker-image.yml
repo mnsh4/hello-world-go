@@ -44,4 +44,4 @@ jobs:
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker push ${{ secrets.DOCKER_USER }}/hello-world-go:${{ env.NEW_VERSION }}
+          docker push ${{ secrets.DOCKER_USER }}/hello-world-go-training:${{ env.NEW_VERSION }}
